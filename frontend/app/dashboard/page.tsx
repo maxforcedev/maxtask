@@ -29,6 +29,7 @@ import {
   AlertTriangle,
   Calendar,
   BarChart3,
+  User,
 } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { useTaskContext } from "@/components/task-context"
@@ -50,7 +51,7 @@ function AppSidebar() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <Tasks className="h-4 w-4" />
             </div>
-            <span className="text-lg font-semibold">MaxTask</span>
+            <span className="text-lg font-semibold">TaskFlow</span>
           </div>
           <ThemeToggle />
         </div>
@@ -75,6 +76,14 @@ function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <Link href="/profile">
+                <User />
+                <span>Meu Perfil</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton>
               <LogOut />
