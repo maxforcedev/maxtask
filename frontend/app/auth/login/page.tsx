@@ -39,8 +39,18 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
-      // Simular autenticação
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) throw new Error(result.detail || "Erro no login")
+
 
       toast({
         title: "Login realizado com sucesso! 🎉",
@@ -162,7 +172,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Login Social */}
+            {/* Login Social 
             <div className="space-y-3">
               <Button variant="outline" className="w-full bg-transparent" disabled={isLoading}>
                 <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
@@ -193,6 +203,7 @@ export default function LoginPage() {
                 Continuar com Facebook
               </Button>
             </div>
+            */}
           </CardContent>
 
           <CardFooter className="flex flex-col space-y-4">
