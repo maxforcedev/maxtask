@@ -4,13 +4,13 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { TaskProvider } from "@/components/task-context"
+import { UserProvider } from "@/components/user-context"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "MaxTask - Sistema de Gerenciamento de Tarefas",
   description: "Gerencie suas tarefas de forma eficiente e produtiva",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -22,7 +22,9 @@ export default function RootLayout({
     <html lang="pt-BR" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <TaskProvider>{children}</TaskProvider>
+          <UserProvider>
+            <TaskProvider>{children}</TaskProvider>
+          </UserProvider>
         </ThemeProvider>
       </body>
     </html>
