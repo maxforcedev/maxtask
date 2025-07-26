@@ -164,7 +164,7 @@ export default function LoginPage() {
               </form>
             </Form>
 
-            {/* Separador */}
+            {/* Separador 
             <div className="relative my-6">
               <Separator />
               <div className="absolute inset-0 flex items-center justify-center">
@@ -172,7 +172,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Login Social 
+             Login Social 
             <div className="space-y-3">
               <Button variant="outline" className="w-full bg-transparent" disabled={isLoading}>
                 <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
