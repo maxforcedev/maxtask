@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import Link from "next/link"
-import { Eye, EyeOff, Mail, Lock, User, WorkflowIcon as Tasks } from "lucide-react"
+import { Eye, EyeOff, Mail, Lock, User, WorkflowIcon as Tasks, Phone } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -20,6 +20,10 @@ const registerSchema = z
   .object({
     name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
     email: z.string().email("Email inválido"),
+    phone: z
+      .string()
+      .min(10, "Telefone deve ter pelo menos 10 dígitos")
+      .regex(/^[\d\s$$$$\-+]+$/, "Formato de telefone inválido"),
     password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
     confirmPassword: z.string(),
     acceptTerms: z.boolean().refine((val) => val === true, {
@@ -44,6 +48,7 @@ export default function RegisterPage() {
     defaultValues: {
       name: "",
       email: "",
+      phone: "",
       password: "",
       confirmPassword: "",
       acceptTerms: false,
@@ -130,6 +135,40 @@ export default function RegisterPage() {
                         <div className="relative">
                           <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                           <Input type="email" placeholder="seu@email.com" className="pl-10" {...field} />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Telefone */}
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Telefone</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            type="tel"
+                            placeholder="(11) 99999-9999"
+                            className="pl-10"
+                            {...field}
+                            onChange={(e) => {
+                              // Formatação automática do telefone
+                              let value = e.target.value.replace(/\D/g, "")
+                              if (value.length <= 11) {
+                                value = value.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3")
+                                if (value.length < 14) {
+                                  value = value.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3")
+                                }
+                              }
+                              field.onChange(value)
+                            }}
+                          />
                         </div>
                       </FormControl>
                       <FormMessage />
@@ -250,7 +289,7 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            {/* Login Social */}
+            {/* Login Social 
             <div className="space-y-3">
               <Button variant="outline" className="w-full bg-transparent" disabled={isLoading}>
                 <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
@@ -281,6 +320,7 @@ export default function RegisterPage() {
                 Continuar com Facebook
               </Button>
             </div>
+            */}
           </CardContent>
 
           <CardFooter className="flex flex-col space-y-4">
