@@ -23,7 +23,7 @@ const registerSchema = z
     phone: z
       .string()
       .min(10, "Telefone deve ter pelo menos 10 dígitos")
-      .regex(/^[\d\s$$$$\-+]+$/, "Formato de telefone inválido"),
+      .regex(/^[\d\s()+-]+$/, "Formato de telefone inválido"),
     password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
     confirmPassword: z.string(),
     acceptTerms: z.boolean().refine((val) => val === true, {
@@ -59,22 +59,28 @@ export default function RegisterPage() {
     setIsLoading(true)
 
     try {
-      // Simular criação de conta
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-
-      toast({
-        title: "Conta criada com sucesso! 🎉",
-        description: "Bem-vindo ao MaxTask! Você já pode começar a usar.",
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       })
 
-      // Redirecionar para dashboard
+      const result = await response.json()
+      
+      if (!response.ok) {
+        const firstError =
+          typeof result === "object"
+            ? Object.values(result)?.[0]?.[0] || "Erro ao cadastrar"
+            : "Erro ao cadastrar"
+
+        throw new Error(firstError)
+      }
+
       window.location.href = "/dashboard"
     } catch (error) {
-      toast({
-        title: "Erro ao criar conta",
-        description: "Ocorreu um erro ao criar sua conta. Tente novamente.",
-        variant: "destructive",
-      })
+      alert(error?.message || String(error))
     } finally {
       setIsLoading(false)
     }

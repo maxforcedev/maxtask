@@ -48,9 +48,10 @@ export default function LoginPage() {
       })
 
       const result = await response.json()
-
+      console.log("Dados enviados:", data)
+      console.log("Resposta da API:", result)
       if (!response.ok) throw new Error(result.detail || "Erro no login")
-
+      
 
       toast({
         title: "Login realizado com sucesso! 🎉",
